@@ -10,6 +10,9 @@ namespace ChangeMapEdge
     [StaticConstructorOnStartup]
     static class ChangeMapEdgeHarmony
     {
+        static public int GetNoBuildLimit() => ChangeMapEdge.GetNoBuildLimit();
+        static public int GetNoZoneLimit() => ChangeMapEdge.GetNoZoneLimit();
+
         static ChangeMapEdgeHarmony()
         {
             Harmony harmony = new Harmony("rimworld.kapitanoczywisty.changemapedge");
@@ -60,29 +63,29 @@ namespace ChangeMapEdge
 
         public static bool DrawNoBuildEdgeLines_Prefix()
         {
-            int limit = ChangeMapEdge.Instance.GetNoBuildLimit();
+            int limit = GetNoBuildLimit();
             if (limit > 0)
                 ChangeMapEdgeHarmony.DrawMapEdgeLines(limit);
             return false;
         }
         public static bool DrawNoZoneEdgeLines_Prefix()
         {
-            int limit = ChangeMapEdge.Instance.GetNoZoneLimit();
+            int limit = GetNoZoneLimit();
             if (limit > 0)
                 ChangeMapEdgeHarmony.DrawMapEdgeLines(limit);
             return false;
         }
         public static void InNoBuildEdgeArea_Postfix(this IntVec3 c, Map map, ref bool __result)
         {
-            __result = c.CloseToEdge(map, ChangeMapEdge.Instance.GetNoBuildLimit());
+            __result = c.CloseToEdge(map, GetNoBuildLimit());
         }
         public static void InNoZoneEdgeArea_Postfix(this IntVec3 c, Map map, ref bool __result)
         {
-            __result = c.CloseToEdge(map, ChangeMapEdge.Instance.GetNoZoneLimit());
+            __result = c.CloseToEdge(map, GetNoZoneLimit());
         }
         public static void CellRectInNoBuildEdgeArea_Postfix(Verse.CellRect __instance, Map map, ref bool __result)
         {
-            int limit = ChangeMapEdge.Instance.GetNoBuildLimit();
+            int limit = GetNoBuildLimit();
             __result = !__instance.IsEmpty && (__instance.minX < limit || __instance.minZ < limit || __instance.maxX >= map.Size.x - limit || __instance.maxZ >= map.Size.z - limit);
         }
     }
